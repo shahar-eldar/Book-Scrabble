@@ -15,6 +15,7 @@ public class Board {
     private static final Set<String> doubleWordScore = new HashSet<>();
     private static final Set<String> tripleLetterScore = new HashSet<>();
     private static final Set<String> doubleLetterScore = new HashSet<>();
+    private static final Set<String> existingPositions = new HashSet<>();
     private static ArrayList<Word> boardWords = new ArrayList<>();
 
     public Board(Tile[][] tiles) {
@@ -83,7 +84,7 @@ public class Board {
                 return (row == STAR && col <= STAR && col + length >= STAR);
             }
         }
-        for (int i = 0; i < length; i++) {
+        for (int i = 0; i < length; i++) {            
             if (word.isVertical()) {
                 // Check vertical and surrounding positions
                 if ((i == 0 && hasATile(row - 1, col)) ||
@@ -105,7 +106,8 @@ public class Board {
 
     private boolean isTilesOverlapping(Word word) {
         if (!isFirst) {
-            for (int i=0; i < word.getTiles().length; i++) {
+            if (existingPositions.contains(word.getRow() + "," + word.getCol() + "," + word.getTiles().length)) {return false;}
+            for (int i = 0; i < word.getTiles().length; i++) {
                 int row = word.isVertical() ? word.getRow() + i : word.getRow();
                 int col = word.isVertical() ? word.getCol() : word.getCol() + i;
                 
@@ -315,6 +317,7 @@ public class Board {
 
         placeWord(getBoard().tiles, word);
         boardWords.add(word);
+        existingPositions.add(word.getRow() + "," + word.getCol() + "," + word.getTiles().length);
         
         if (isFirst) {isFirst = false;}
         //System.out.println(score);
