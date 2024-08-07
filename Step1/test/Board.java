@@ -305,7 +305,7 @@ public class Board {
     public int tryPlaceWord(Word word) {
         int score = 0;
         
-        if (!boardLegal(word) && !dictionaryLegal(word)) {
+        if (!boardLegal(word) || !dictionaryLegal(word)) {
             return score;
         }
 

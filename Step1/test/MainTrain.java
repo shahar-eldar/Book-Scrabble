@@ -100,7 +100,6 @@ public class MainTrain {
 			System.out.println("problem in placeWord for 4th word (-10)");
 
 		Word bit=new Word(get("BIT"), 10, 4, false);
-		// Word bit=new Word(get("BIT"), 10, 4, false);
 		if(b.tryPlaceWord(bit)!=22)
 			System.out.println("problem in placeWord for 5th word (-15)");
 		// System.out.println(Board.getBoard().toString());
