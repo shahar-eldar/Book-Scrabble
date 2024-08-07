@@ -114,7 +114,10 @@ public class Board {
                 int col = word.isVertical() ? word.getCol() : word.getCol() + i;
                 
                 if (hasATile(row, col) && word.getTiles()[i] != null) {return false;}
-                if (word.getTiles()[i] == null) {nullCounter++;}
+                if (word.getTiles()[i] == null) {
+                    if (!hasATile(row, col)) {return false;}
+                    nullCounter++;
+                }
             }
             if (nullCounter == length) {return false;}
         }
