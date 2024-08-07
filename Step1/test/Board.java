@@ -106,13 +106,17 @@ public class Board {
 
     private boolean isTilesOverlapping(Word word) {
         if (!isFirst) {
-            if (existingPositions.contains(word.getRow() + "," + word.getCol() + "," + word.getTiles().length)) {return false;}
-            for (int i = 0; i < word.getTiles().length; i++) {
+            int nullCounter = 0;
+            int length = word.getTiles().length;
+            if (existingPositions.contains(word.getRow() + "," + word.getCol() + "," + length)) {return false;}
+            for (int i = 0; i < length; i++) {
                 int row = word.isVertical() ? word.getRow() + i : word.getRow();
                 int col = word.isVertical() ? word.getCol() : word.getCol() + i;
                 
-                if (hasATile(row, col) && word.getTiles()[i] != null) {return false;} 
+                if (hasATile(row, col) && word.getTiles()[i] != null) {return false;}
+                if (word.getTiles()[i] == null) {nullCounter++;}
             }
+            if (nullCounter == length) {return false;}
         }
         return true;
     }
