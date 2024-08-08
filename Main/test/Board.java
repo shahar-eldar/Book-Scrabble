@@ -84,7 +84,7 @@ public class Board {
                 return (row == STAR && col <= STAR && col + length >= STAR);
             }
         }
-        for (int i = 0; i < length; i++) {            
+        for (int i = 0; i < length; i++) {  
             if (word.isVertical()) {
                 // Check vertical and surrounding positions
                 if ((i == 0 && hasATile(row - 1, col)) ||
@@ -327,7 +327,7 @@ public class Board {
         existingPositions.add(word.getRow() + "," + word.getCol() + "," + word.getTiles().length);
         
         if (isFirst) {isFirst = false;}
-        //System.out.println(score);
+        System.out.println(score);
         return score;
     }
 }

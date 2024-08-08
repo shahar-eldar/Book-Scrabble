@@ -105,12 +105,9 @@ public class MainTrain {
 		// System.out.println(Board.getBoard().toString());
 	}
 	
-
-
 	public static void main(String[] args) {
 		testBag(); // 30 points
 		testBoard(); // 70 points
 		System.out.println("done");				
 	}
-
 }
