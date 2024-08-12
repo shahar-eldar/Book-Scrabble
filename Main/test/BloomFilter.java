@@ -15,34 +15,36 @@ public class BloomFilter {
         this.bitSet = new BitSet(bitSetSize + 1);
         this.hashFunctions = new MessageDigest[hashAlgorithms.length];
 
-        try {
-            for (int i = 0; i < hashAlgorithms.length; i++) {
-                this.hashFunctions[i] = MessageDigest.getInstance(hashAlgorithms[i]);
+        for (int i = 0; i < hashAlgorithms.length; i++) {
+            try {
+                    this.hashFunctions[i] = MessageDigest.getInstance(hashAlgorithms[i]);
+            } catch (NoSuchAlgorithmException e) {
+                System.err.println("Hash name invalid" + e.getMessage());
             }
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Invalid hash algorithm specified", e);
         }
     }
 
-    public int getBit(String value, MessageDigest hashFunction) {
+    private int getBit(String value, MessageDigest hashFunction) {
         byte[] bytesResult;
         BigInteger bigResult;
         int intResult;
         bytesResult = hashFunction.digest(value.getBytes());
-        bigResult = new BigInteger(1, bytesResult);
+        bigResult = new BigInteger(bytesResult);
         intResult = Math.abs(bigResult.intValue()) % this.bitSetSize;
         return intResult;
     }
 
     public void add(String value) {
         for (MessageDigest hashFunction : hashFunctions) {
-            this.bitSet.set(getBit(value, hashFunction));
+            if (hashFunction != null) {
+                this.bitSet.set(getBit(value, hashFunction), true);
+            }
         }
     }
 
     public boolean contains(String value) {
         for (MessageDigest hashFunction : hashFunctions) {
-            if (!bitSet.get(getBit(value, hashFunction))) {
+            if (hashFunction != null && !bitSet.get(getBit(value, hashFunction))) {
                 return false;
             }
         }
@@ -51,6 +53,17 @@ public class BloomFilter {
 
     @Override
     public String toString() {
-        return new BitSetToString(this.bitSet).toString(bitSetSize);
+        StringBuilder sb = new StringBuilder(bitSetSize);
+        
+        for (int i = 0; i <= bitSet.previousSetBit(bitSet.length()); i++) {
+            sb.append('0');
+        }
+
+        for (int i = bitSet.nextSetBit(0); i >= 0; i = bitSet.nextSetBit(i + 1)) {
+            if (i > bitSet.previousSetBit(bitSet.length())) {break;}
+            sb.setCharAt(i, '1');
+        }
+
+        return sb.toString();
     }
 }
