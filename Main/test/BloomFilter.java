@@ -42,11 +42,11 @@ public class BloomFilter {
 
     public boolean contains(String value) {
         for (MessageDigest hashFunction : hashFunctions) {
-            if (bitSet.get(getBit(value, hashFunction))) {
-                return true;
+            if (!bitSet.get(getBit(value, hashFunction))) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     @Override
