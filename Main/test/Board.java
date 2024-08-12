@@ -327,7 +327,6 @@ public class Board {
         existingPositions.add(word.getRow() + "," + word.getCol() + "," + word.getTiles().length);
         
         if (isFirst) {isFirst = false;}
-        System.out.println(score);
         return score;
     }
 }
