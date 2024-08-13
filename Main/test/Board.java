@@ -2,7 +2,9 @@ package test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class Board {
@@ -11,10 +13,7 @@ public class Board {
     private static final int BOARD_SIZE = 15;
     private static final int STAR = 7;
     private static boolean isFirst = true;
-    private static final Set<String> tripleWordScore = new HashSet<>();
-    private static final Set<String> doubleWordScore = new HashSet<>();
-    private static final Set<String> tripleLetterScore = new HashSet<>();
-    private static final Set<String> doubleLetterScore = new HashSet<>();
+    private static final Map<String, String> bonusTiles = new HashMap<>();
     private static final Set<String> existingPositions = new HashSet<>();
     private static ArrayList<Word> boardWords = new ArrayList<>();
 
@@ -37,40 +36,6 @@ public class Board {
             string += "]\n";
         }
         return string + "]";
-    }
-
-    private static void addPositions(Set<String> set, int[][] positions) {
-        for (int[] pos : positions) {
-            set.add(pos[0] + "," + pos[1]);
-        }
-    }
-
-    static {
-        // Initialize the sets with the bonus positions
-        addPositions(tripleWordScore, new int[][]{{0, 0}, {0, 7}, {0, 14}, {7, 0}, {7, 14}, {14, 0}, {14, 7}, {14, 14}});
-        addPositions(doubleWordScore, new int[][]{{1, 1}, {2, 2}, {3, 3}, {4, 4}, {10, 10}, {11, 11}, {12, 12}, {13, 13}, {14, 1}, {13, 1}, {1, 13}, {12, 2}, {12, 2}, {11, 3}, {10, 4}, {4, 10}, {3, 11}});
-        addPositions(tripleLetterScore, new int[][]{{1, 5}, {1, 9}, {5, 1}, {5, 5}, {5, 9}, {5, 13}, {9, 1}, {9, 5}, {9, 9}, {9, 13}, {13, 5}, {13, 9}});
-        addPositions(doubleLetterScore, new int[][]{{0, 3}, {0, 11}, {2, 6}, {2, 8}, {3, 0}, {3, 7}, {3, 14}, {6, 2}, {6, 6}, {6, 8}, {6, 12}, {7, 3}, {7, 11}, {8, 2}, {8, 6}, {8, 8}, {8, 12}, {11, 0}, {11, 7}, {11, 14}, {12, 6}, {12, 8}, {14, 3}, {14, 11}});
-    }
-
-    // Methods to check if a given position is a bonus tile
-    private static boolean isTripleWordScore(int row, int col) {
-        return tripleWordScore.contains(row + "," + col);
-    }
-    
-    private static boolean isDoubleWordScore(int row, int col) {
-        if (isFirst && row == STAR && col == STAR) {
-            return true;
-        }
-        return doubleWordScore.contains(row + "," + col);
-    }
-    
-    private static boolean isTripleLetterScore(int row, int col) {
-        return tripleLetterScore.contains(row + "," + col);
-    }
-    
-    private static boolean isDoubleLetterScore(int row, int col) {
-        return doubleLetterScore.contains(row + "," + col);
     }
 
     public static Board getBoard() {
@@ -262,6 +227,37 @@ public class Board {
         return newWords;
     }
 
+    private static void addPositions(Map<String, String> map, String bonusType, int[][] positions) {
+        for (int[] pos : positions) {
+            map.put(pos[0] + "," + pos[1], bonusType);
+        }
+    }    
+
+    static {
+        addPositions(bonusTiles, "TW", new int[][]{{0, 0}, {0, 7}, {0, 14}, {7, 0}, {7, 14}, {14, 0}, {14, 7}, {14, 14}});
+        addPositions(bonusTiles, "DW", new int[][]{{1, 1}, {2, 2}, {3, 3}, {4, 4}, {10, 10}, {11, 11}, {12, 12}, {13, 13}, {14, 1}, {13, 1}, {1, 13}, {12, 2}, {12, 2}, {11, 3}, {10, 4}, {4, 10}, {3, 11}});
+        addPositions(bonusTiles, "TL", new int[][]{{1, 5}, {1, 9}, {5, 1}, {5, 5}, {5, 9}, {5, 13}, {9, 1}, {9, 5}, {9, 9}, {9, 13}, {13, 5}, {13, 9}});
+        addPositions(bonusTiles, "DL", new int[][]{{0, 3}, {0, 11}, {2, 6}, {2, 8}, {3, 0}, {3, 7}, {3, 14}, {6, 2}, {6, 6}, {6, 8}, {6, 12}, {7, 3}, {7, 11}, {8, 2}, {8, 6}, {8, 8}, {8, 12}, {11, 0}, {11, 7}, {11, 14}, {12, 6}, {12, 8}, {14, 3}, {14, 11}});
+    }
+    
+
+    // Methods to check if a given position is a bonus tile
+    private static boolean isTripleWordScore(int row, int col) {
+        return "TW".equals(bonusTiles.get(row + "," + col));
+    }
+    
+    private static boolean isDoubleWordScore(int row, int col) {
+        return (isFirst && row == STAR && col == STAR) || "DW".equals(bonusTiles.get(row + "," + col));
+    }
+    
+    private static boolean isTripleLetterScore(int row, int col) {
+        return "TL".equals(bonusTiles.get(row + "," + col));
+    }
+    
+    private static boolean isDoubleLetterScore(int row, int col) {
+        return "DL".equals(bonusTiles.get(row + "," + col));
+    }
+    
     public int getScore(Word word) {
         int score = 0;
         Tile[] tiles = word.getTiles();
