@@ -14,7 +14,6 @@ public class Board {
     private static final int STAR = 7;
     private static boolean isFirst = true;
     private static final Map<String, String> bonusTiles = new HashMap<>();
-    private static final Set<String> existingPositions = new HashSet<>();
     private static ArrayList<Word> boardWords = new ArrayList<>();
 
     public Board(Tile[][] tiles) {
@@ -137,7 +136,6 @@ public class Board {
         if (!isFirst) {
             int nullCounter = 0;
             int length = word.getTiles().length;
-            if (existingPositions.contains(word.getRow() + "," + word.getCol() + "," + length)) {return false;}
             for (int i = 0; i < length; i++) {
                 int row = word.isVertical() ? word.getRow() + i : word.getRow();
                 int col = word.isVertical() ? word.getCol() : word.getCol() + i;
@@ -256,6 +254,7 @@ public class Board {
                 newWords.add(newWord);
             }
         }
+        System.out.println(newWords);
         return newWords;
     }
     
@@ -311,7 +310,6 @@ public class Board {
         }
 
         placeWord(this.tiles, word);
-        existingPositions.add(word.getRow() + "," + word.getCol() + "," + word.getTiles().length);
         
         if (isFirst) {isFirst = false;}
         return score;
