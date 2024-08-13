@@ -270,7 +270,7 @@ public class Board {
             
             if (tiles[i] == null) {
                 if (this.tiles[row][col] != null && this.tiles[row][col].getLetter() != '_') {
-                    tileScore = getBoard().getTiles()[row][col].getTileScore();
+                    tileScore = this.tiles[row][col].getTileScore();
                 } else {break;} // bug
             } else {
                 tileScore = tiles[i].getTileScore();
@@ -313,7 +313,7 @@ public class Board {
             }
         }
 
-        placeWord(getBoard().tiles, word);
+        placeWord(this.tiles, word);
         boardWords.add(word);
         existingPositions.add(word.getRow() + "," + word.getCol() + "," + word.getTiles().length);
         
