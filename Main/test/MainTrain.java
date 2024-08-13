@@ -17,7 +17,7 @@ public class MainTrain {
 			System.out.println("getQuantities did not return a clone (-5)");
 		
 		for(int k=0;k<9;k++) {
-			int[] qs = b.getQuantities(); 
+			int[] qs = b.getQuantities();
 			Tile t = b.getRand();
 			int i=t.letter-'A';
 			int[] qs1 = b.getQuantities();		

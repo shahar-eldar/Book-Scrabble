@@ -137,11 +137,11 @@ public class Board {
 
     private void placeWord(Tile[][] board, Word word) {
         for (int i = 0; i < word.getTiles().length; i++) {
-            int row = word.isVertical() ? word.getRow() + i : word.getRow();
-            int col = word.isVertical() ? word.getCol() : word.getCol() + i;
             Tile currentTile = word.getTiles()[i];
             
             if (currentTile != null) {
+                int row = word.isVertical() ? word.getRow() + i : word.getRow();
+                int col = word.isVertical() ? word.getCol() : word.getCol() + i;
                 board[row][col] = currentTile;
             }
         }
@@ -248,7 +248,8 @@ public class Board {
     
     private static boolean isDoubleWordScore(int row, int col) {
         if (isFirst && row == STAR && col == STAR) {
-            return doubleWordScore.remove(row + "," + col);
+            doubleWordScore.remove(row + "," + col);
+            return true;
         }
         return doubleWordScore.contains(row + "," + col);
     }
@@ -265,7 +266,7 @@ public class Board {
         int score = 0;
         Tile[] tiles = word.getTiles();
         int tileScore;
-        int tripleWordScoreCount = 0, doubleWordScoreCount = 0;
+        int tripleWordScoreCount = 1, doubleWordScoreCount = 1;
 
         for (int i = 0; i < tiles.length; i++) {
             int row = word.isVertical() ? word.getRow() + i : word.getRow();
@@ -274,7 +275,7 @@ public class Board {
             if (tiles[i] == null) {
                 if (getBoard().getTiles()[row][col] != null) {
                     tileScore = getBoard().getTiles()[row][col].getTileScore();
-                } else {break;}
+                } else {break;} // bug
             } else {
                 tileScore = tiles[i].getTileScore();
             }
@@ -288,18 +289,12 @@ public class Board {
             }
             
             if (isDoubleWordScore(row, col)) {
-                doubleWordScoreCount ++;
+                doubleWordScoreCount *= 2;
             } else if (isTripleWordScore(row, col)) {
-                tripleWordScoreCount ++;
+                tripleWordScoreCount *= 3;
             }
         }
-        if (tripleWordScoreCount > 0) {
-            for (int j = 0; j < tripleWordScoreCount; j++) {score *= 3;}
-        }
-        if (doubleWordScoreCount > 0) {
-            for (int j = 0; j < doubleWordScoreCount; j++) {score *= 2;}
-        }
-        return score;
+        return score * tripleWordScoreCount * doubleWordScoreCount;
     }
 
     public int tryPlaceWord(Word word) {
