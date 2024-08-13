@@ -10,6 +10,7 @@ public class Board {
     private Tile[][] tiles;
     private static final int BOARD_SIZE = 15;
     private static final int STAR = 7;
+    private static final char UNDERSCORE = '_';
     private static boolean isFirst = true;
     private static final Map<String, String> bonusTiles = new HashMap<>();
     private static ArrayList<Word> boardWords = new ArrayList<>();
@@ -96,7 +97,7 @@ public class Board {
 
     private boolean hasATile(int row, int col) {
         Tile tile = this.tiles[row][col];
-        return (tile != null && tile.getLetter() != '_');
+        return (tile != null && tile.getLetter() != UNDERSCORE);
     }
 
     public boolean isBasedOnExistingTiles(Word word) {
@@ -164,7 +165,7 @@ public class Board {
         for (int i = 0; i < word.getTiles().length; i++) {
             Tile currentTile = word.getTiles()[i];
             
-            if (currentTile != null && currentTile.getLetter() != '_') {
+            if (currentTile != null && currentTile.getLetter() != UNDERSCORE) {
                 int row = word.isVertical() ? word.getRow() + i : word.getRow();
                 int col = word.isVertical() ? word.getCol() : word.getCol() + i;
                 board[row][col] = currentTile;
@@ -174,12 +175,12 @@ public class Board {
 
     private Word getHorizontalWord(Tile[][] board, int row, int col, int length) {
         int startCol = col;
-        while (startCol > 0 && board[row][startCol - 1] != null && board[row][startCol - 1].getLetter() != '_') {
+        while (startCol > 0 && board[row][startCol - 1] != null && board[row][startCol - 1].getLetter() != UNDERSCORE) {
             startCol--;
         }
     
         int endCol = col;
-        while (endCol < BOARD_SIZE && board[row][endCol + 1] != null && board[row][endCol + 1].getLetter() != '_') {
+        while (endCol < BOARD_SIZE && board[row][endCol + 1] != null && board[row][endCol + 1].getLetter() != UNDERSCORE) {
             endCol++;
         }
     
@@ -196,12 +197,12 @@ public class Board {
 
     private Word getVerticalWord(Tile[][] board, int row, int col, int length) {
         int startRow = row;
-        while (startRow > 0 && board[startRow - 1][col] != null && board[startRow - 1][col].getLetter() != '_') {
+        while (startRow > 0 && board[startRow - 1][col] != null && board[startRow - 1][col].getLetter() != UNDERSCORE) {
             startRow--;
         }
     
         int endRow = row;
-        while (endRow < BOARD_SIZE && board[endRow + 1][col] != null && board[endRow + 1][col].getLetter() != '_') {
+        while (endRow < BOARD_SIZE && board[endRow + 1][col] != null && board[endRow + 1][col].getLetter() != UNDERSCORE) {
             endRow++;
         }
         
@@ -266,9 +267,10 @@ public class Board {
             int col = word.isVertical() ? word.getCol() : word.getCol() + i;
             
             if (tiles[i] == null) {
-                if (this.tiles[row][col] != null && this.tiles[row][col].getLetter() != '_') {
+                if ((this.tiles[row][col] != null && this.tiles[row][col].getLetter() != UNDERSCORE) ||
+                    tiles[i].getLetter() != UNDERSCORE) {
                     tileScore = this.tiles[row][col].getTileScore();
-                } else {break;} // bug
+                } else {break;}
             } else {
                 tileScore = tiles[i].getTileScore();
             }
