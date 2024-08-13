@@ -70,7 +70,8 @@ public class Board {
     
 
     private boolean hasATile(int row, int col) {
-        return getBoard().getTiles()[row][col] != null;
+        Tile tile = this.tiles[row][col];
+        return (tile != null && tile.getLetter() != '_');
     }
 
     public boolean isBasedOnExistingTiles(Word word) {
@@ -139,7 +140,7 @@ public class Board {
         for (int i = 0; i < word.getTiles().length; i++) {
             Tile currentTile = word.getTiles()[i];
             
-            if (currentTile != null) {
+            if (currentTile != null && currentTile.getLetter() != '_') {
                 int row = word.isVertical() ? word.getRow() + i : word.getRow();
                 int col = word.isVertical() ? word.getCol() : word.getCol() + i;
                 board[row][col] = currentTile;
@@ -149,12 +150,12 @@ public class Board {
 
     private Word getHorizontalWord(Tile[][] board, int row, int col, int length) {
         int startCol = col;
-        while (startCol > 0 && board[row][startCol - 1] != null) {
+        while (startCol > 0 && board[row][startCol - 1] != null && board[row][startCol - 1].getLetter() != '_') {
             startCol--;
         }
     
         int endCol = col;
-        while (endCol < BOARD_SIZE && board[row][endCol + 1] != null) {
+        while (endCol < BOARD_SIZE && board[row][endCol + 1] != null && board[row][endCol + 1].getLetter() != '_') {
             endCol++;
         }
     
@@ -171,12 +172,12 @@ public class Board {
 
     private Word getVerticalWord(Tile[][] board, int row, int col, int length) {
         int startRow = row;
-        while (startRow > 0 && board[startRow - 1][col] != null) {
+        while (startRow > 0 && board[startRow - 1][col] != null && board[startRow - 1][col].getLetter() != '_') {
             startRow--;
         }
     
         int endRow = row;
-        while (endRow < BOARD_SIZE && board[endRow + 1][col] != null) {
+        while (endRow < BOARD_SIZE && board[endRow + 1][col] != null && board[endRow + 1][col].getLetter() != '_') {
             endRow++;
         }
         
@@ -236,7 +237,7 @@ public class Board {
     static {
         // Initialize the sets with the bonus positions
         addPositions(tripleWordScore, new int[][]{{0, 0}, {0, 7}, {0, 14}, {7, 0}, {7, 14}, {14, 0}, {14, 7}, {14, 14}});
-        addPositions(doubleWordScore, new int[][]{{1, 1}, {2, 2}, {3, 3}, {4, 4}, {7, 7}, {10, 10}, {11, 11}, {12, 12}, {13, 13}, {14, 1}, {13, 1}, {1, 13}, {12, 2}, {12, 2}, {11, 3}, {10, 4}, {4, 10}, {3, 11}});
+        addPositions(doubleWordScore, new int[][]{{1, 1}, {2, 2}, {3, 3}, {4, 4}, {10, 10}, {11, 11}, {12, 12}, {13, 13}, {14, 1}, {13, 1}, {1, 13}, {12, 2}, {12, 2}, {11, 3}, {10, 4}, {4, 10}, {3, 11}});
         addPositions(tripleLetterScore, new int[][]{{1, 5}, {1, 9}, {5, 1}, {5, 5}, {5, 9}, {5, 13}, {9, 1}, {9, 5}, {9, 9}, {9, 13}, {13, 5}, {13, 9}});
         addPositions(doubleLetterScore, new int[][]{{0, 3}, {0, 11}, {2, 6}, {2, 8}, {3, 0}, {3, 7}, {3, 14}, {6, 2}, {6, 6}, {6, 8}, {6, 12}, {7, 3}, {7, 11}, {8, 2}, {8, 6}, {8, 8}, {8, 12}, {11, 0}, {11, 7}, {11, 14}, {12, 6}, {12, 8}, {14, 3}, {14, 11}});
     }
@@ -248,7 +249,6 @@ public class Board {
     
     private static boolean isDoubleWordScore(int row, int col) {
         if (isFirst && row == STAR && col == STAR) {
-            doubleWordScore.remove(row + "," + col);
             return true;
         }
         return doubleWordScore.contains(row + "," + col);
@@ -273,7 +273,7 @@ public class Board {
             int col = word.isVertical() ? word.getCol() : word.getCol() + i;
             
             if (tiles[i] == null) {
-                if (getBoard().getTiles()[row][col] != null) {
+                if (this.tiles[row][col] != null && this.tiles[row][col].getLetter() != '_') {
                     tileScore = getBoard().getTiles()[row][col].getTileScore();
                 } else {break;} // bug
             } else {
