@@ -90,9 +90,9 @@ public class Board {
         
         if (word.isVertical()) {
             return (row + length <= BOARD_SIZE);
-        } else {
-            return (col + length <= BOARD_SIZE);
         }
+        
+        return (col + length <= BOARD_SIZE);
     }
 
     private boolean hasATile(int row, int col) {
