@@ -29,7 +29,7 @@ public class MyServer {
                             break;
                         }
                         clientHandler.handleClient(clientSocket.getInputStream(), clientSocket.getOutputStream());
-                        clientSocket.close();
+                        clientSocket.close(); // no need
                     } catch (IOException e) {
                         if (!stop) {
                             e.printStackTrace();
