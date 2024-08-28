@@ -60,7 +60,7 @@ public class MyServer {
 
         if (serverThread != null && serverThread.isAlive()) {
             try {
-                serverThread.join(2000); // Wait for the server thread to finish
+                serverThread.join(1); // Wait for the server thread to finish
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 Thread.currentThread().interrupt(); // Restore interrupted status
