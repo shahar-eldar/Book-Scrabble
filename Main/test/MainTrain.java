@@ -17,7 +17,7 @@ public class MainTrain {
 			System.out.println("getQuantities did not return a clone (-5)");
 		
 		for(int k=0;k<9;k++) {
-			int[] qs = b.getQuantities(); 
+			int[] qs = b.getQuantities();
 			Tile t = b.getRand();
 			int i=t.letter-'A';
 			int[] qs1 = b.getQuantities();		
@@ -69,16 +69,8 @@ public class MainTrain {
 		Word w5=new Word(ts,0,7,true);
 		Word w6=new Word(ts,7,0,false);
 		
-		if(b.boardLegal(w0) || b.boardLegal(w1) || b.boardLegal(w2) || b.boardLegal(w3) || b.boardLegal(w4) || !b.boardLegal(w5) || !b.boardLegal(w6)) {
-			System.out.println("0 " +b.boardLegal(w0));
-			System.out.println("1 " +b.boardLegal(w1));
-			System.out.println("2 " +b.boardLegal(w2));
-			System.out.println("3 " +b.boardLegal(w3));
-			System.out.println("4 " +b.boardLegal(w4));
-			System.out.println("5 " +b.boardLegal(w5));
-			System.out.println("6 " +b.boardLegal(w6));
+		if(b.boardLegal(w0) || b.boardLegal(w1) || b.boardLegal(w2) || b.boardLegal(w3) || b.boardLegal(w4) || !b.boardLegal(w5) || !b.boardLegal(w6))
 			System.out.println("your boardLegal function is wrong (-10)");
-		}
 		
 		for(Tile t : ts)
 			bag.put(t);
@@ -102,12 +94,15 @@ public class MainTrain {
 		Word bit=new Word(get("BIT"), 10, 4, false);
 		if(b.tryPlaceWord(bit)!=22)
 			System.out.println("problem in placeWord for 5th word (-15)");
-		// System.out.println(Board.getBoard().toString());
+
+		// System.out.println(b.toString());
 	}
-	
+
+
 	public static void main(String[] args) {
 		testBag(); // 30 points
 		testBoard(); // 70 points
 		System.out.println("done");				
 	}
+
 }

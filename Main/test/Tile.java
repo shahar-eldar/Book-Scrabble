@@ -55,6 +55,7 @@ public class Tile {
         
         private final int[] lettersCount;
         private final Tile[] tiles;
+        private int size;
         
         private static final int[] DEFAULT_LETTER_COUNT = {9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1};
         private static final int[] LETTER_SCORES = {1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10};
@@ -66,6 +67,9 @@ public class Tile {
         private Bag(int[] lettersCount, int[] scores) {
             this.lettersCount = Arrays.copyOf(lettersCount, lettersCount.length);
             this.tiles = createTiles();
+            for (int letter : DEFAULT_LETTER_COUNT) {
+                this.size += letter;
+            }
         }
 
         private Tile[] createTiles() {
@@ -88,7 +92,7 @@ public class Tile {
         }
 
         public Tile getRand() {
-            if (Arrays.equals(this.lettersCount, new int[this.lettersCount.length])) {
+            if (this.size == 0) {
                 return null;
             }
 
@@ -110,6 +114,7 @@ public class Tile {
             }
 
             this.lettersCount[index]--;
+            this.size--;
             return this.tiles[index];
         }
 
@@ -117,11 +122,12 @@ public class Tile {
             int index = tile.letter - 'A';
             if (this.lettersCount[index] < DEFAULT_LETTER_COUNT[index]) {
                 this.lettersCount[index]++;
+                this.size++;
             }
         }
 
         public int size() {
-            return Arrays.stream(this.lettersCount).sum();
+            return this.size;
         }
     }
 }
