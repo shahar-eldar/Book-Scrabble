@@ -4,12 +4,14 @@ import java.io.*;
 import java.util.Arrays;
 
 public class BookScrabbleHandler implements ClientHandler {
+    private BufferedReader reader;
+    private PrintWriter writer;
 
     @Override
     public void handleClient(InputStream inFromClient, OutputStream outToClient) {
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inFromClient));
-            PrintWriter writer = new PrintWriter(new OutputStreamWriter(outToClient), true);
+            reader = new BufferedReader(new InputStreamReader(inFromClient));
+            writer = new PrintWriter(new OutputStreamWriter(outToClient), true);
             String[] inputs = reader.readLine().split(",");
             boolean result = false;
 
@@ -27,6 +29,15 @@ public class BookScrabbleHandler implements ClientHandler {
 
     @Override
     public void close() {
-        // Nothing specific to close for now
+        try {
+            if (reader != null) {
+                reader.close();
+            }
+            if (writer != null) {
+                writer.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
