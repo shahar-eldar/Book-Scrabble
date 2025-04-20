@@ -32,7 +32,7 @@ public class LFU implements CacheReplacementPolicy {
     @Override
     public String remove() {
         if (cache.isEmpty()) {
-            return null; // או התנהלות אחרת במצב של מטמון ריק
+            return null;
         }
         String leastUsed = leastFrequentlyUsed.poll();
         cache.remove(leastUsed);
